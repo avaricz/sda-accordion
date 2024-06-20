@@ -2,34 +2,19 @@
 
 <h1>Home</h1>
 
-  <MyAcc :accordionContent="content" @clicked="onClick" :isOpen="isOpened"/>
+  <Accordion />
+
 
 </template>
 
 <script>
 
-import MyAcc from "@/components/MyAcc.vue"
+import Accordion from "@/components/Accordion.vue"
 
 export default {
 
   name: 'App',
-  data () {
-    return {
-      content: [
-        {title: "První Item", content: "První content itemu prvního", },
-        {title: "Druhý Item", content: "Druhý content itemu druhého", },
-        {title: "Třetí Item", content: "Třetí content itemu třetího", }
-      ],
-      isOpened: true
-    }
-  },
-  methods: {
-    onClick (index) {
-      console.log(this.content[index].title + index)
-      this.isOpened = !this.isOpened
-    }
-  },
-  components: { MyAcc }
+  components: { Accordion }
 }
 
 </script>

@@ -3,17 +3,7 @@
     <div class="container">
 
         <template v-for="(item, index) in accordionContent" :key="index">
-
-            <div class="header" @click="$emit('clicked', index)">
-                <div class="header-title">{{ item.title }}</div>
-                <img :src="arrow" class="arrow" :class="{closed: isOpen}" alt="">
-            </div>
-
-            <transition name="efect">
-
-                <div v-if="isOpen" class="content">{{ item.content }}</div>
-
-            </transition>
+            <MyAccItem :item="item" :index="index" :openedIndex="openedIndex" @click="onOpened" />
 
         </template>
 
@@ -24,26 +14,40 @@
 <script>
 
 import arrowImg from "@/assets/arrow.svg"
+import MyAccItem from "@/components/rattus/MyAccItem.vue"
 
 export default {
 
     name: 'MyAcc',
     props: {
         accordionContent: Array,
-        isOpen: Boolean
     },
-    data () {
+    data() {
         return {
-            opened: false,
-            arrow: arrowImg
+            arrow: arrowImg,
+            openedIndex: 0,
         }
+    },
+    methods: {
+        onOpened(index) {
+            if (this.openedIndex === index) {
+                this.openedIndex = -1;
+                return;
+            }
+            this.openedIndex = index;
+        },
+        isOpen(index) {
+            return this.openedIndex === index;
+        }
+    },
+    components: {
+        MyAccItem
     }
 }
 
 </script>
 
 <style scoped>
-
 .container {
     display: flex;
     flex-direction: column;
@@ -54,7 +58,8 @@ export default {
     max-width: 400px;
 }
 
-.header, .content {
+.header,
+.content {
     padding: .7rem;
 }
 
@@ -75,22 +80,21 @@ export default {
     transition: all .3s linear
 }
 
-.efect-enter-from, .efect-leave-to {
+.efect-enter-from,
+.efect-leave-to {
     max-height: 0;
 }
 
-.efect-enter-to, .efect-leave-from {
-    
+.efect-enter-to,
+.efect-leave-from {
     max-height: 100%;
-
 }
 
-.efect-enter-active{
+.efect-enter-active {
     transition: all .5s linear
 }
 
 .efect-leave-active {
     animation: all .5s linear
 }
-
 </style>
