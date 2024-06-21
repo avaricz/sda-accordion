@@ -11,6 +11,6 @@ export const getData = (index) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(data[index])
-    }, 1000)
+    }, 2000)
   })
 }

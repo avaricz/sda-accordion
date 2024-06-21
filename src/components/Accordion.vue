@@ -9,7 +9,7 @@
         :content="item.content"
         :show="show[index]"
         @clicked="onClicked(index)"
-        :loading="loadContent" <!-- TODO -->
+        :loading="showLoading[index]" 
         />
 
     </div>
@@ -27,32 +27,41 @@ export default {
     data() {
         return {
             accordionData: [
-                {title: "První Item", content: "loading..."},
-                {title: "Druhý Item", content: "Loading..."},
-                {title: "Třetí Item", content: "loading..."}
+                {title: "První Item", content: ""},
+                {title: "Druhý Item", content: ""},
+                {title: "Třetí Item", content: ""}
             ],
             show: [],
-            loadContent: false
+            showLoading:[] ,
+            filledContent: []
         }
     },
     created () {
         this.accordionData.forEach(() => {
             this.show.push(false)
+            this.showLoading.push(false)
         })
     },
     methods: {
         onClicked (index) {
+            if (this.accordionData[index].content === "") {
+                this.loadData(index)
+
+                this.showLoading[index] = !this.showLoading[index]
+                return
+            }
             this.show[index] = !this.show[index]
-            this.loadData(index)
+            
+            
             
         },
         async loadData(index) {
-            
             const data = await getData(index)
             this.accordionData[index].content = data
-            
-            
-        }
+            this.filledContent[index] = true
+            this.showLoading[index] = !this.showLoading[index]
+            this.show[index] = !this.show[index]
+        },
     },
     components: {
         AccordionContent,
@@ -66,7 +75,6 @@ export default {
 .container {
     display: flex;
     flex-direction: column;
-    border: 1px solid #cdcdcd;
     border-radius: 5px;
     overflow: hidden;
     width: 100%;
